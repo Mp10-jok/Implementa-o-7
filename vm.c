@@ -22,6 +22,10 @@ typedef struct{
 
 static TLBEntry tlb[TLB_SIZE];
 
+static long clock_tick = 0; 
+static int page_faults = 0;
+static int tlb_hits = 0;
+
 static int *addresses = NULL;
 static int n_addresses = 0;
 
@@ -140,8 +144,41 @@ static int tlb_lookup(int page){
             fatal("não foi possível criar a thread de busca na TLB", NULL);
         }       
     }
-    for (int i = 0; i < TLB_SIZE; i++){
+    for(int i = 0; i < TLB_SIZE; i++){
         pthread_join(threads[i], NULL);
     }
     return found;
+}
+
+static void tlb_insert(int page, int frame, Algorithm tlb_alg){
+    int victim = -1;
+
+    for(int i = 0; i < TLB_SIZE; i++){
+        if(!tlb[i].valid){ 
+            victim = i; break; 
+        }
+    }
+        
+    if(victim == -1){
+        victim = 0;
+        for(int i = 1; i < TLB_SIZE; i++){
+            long a = (tlb_alg == ALG_FIFO) ? tlb[i].loaded : tlb[i].used;
+            long b = (tlb_alg == ALG_FIFO) ? tlb[victim].loaded : tlb[victim].used;
+            if (a < b) victim = i;
+        }
+    }
+
+    tlb[victim].valid = 1;
+    tlb[victim].page = page;
+    tlb[victim].frame = frame;
+    tlb[victim].loaded = clock_tick;
+    tlb[victim].used = clock_tick;
+}
+
+static void tlb_invalidate(int page){
+    for(int i = 0; i < TLB_SIZE; i++){
+        if(tlb[i].valid && tlb[i].page == page){
+            tlb[i].valid = 0;
+        } 
+    }       
 }
