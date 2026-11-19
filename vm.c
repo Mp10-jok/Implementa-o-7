@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <pthread.h>
 
+#define TLB_SIZE 16
 #define MAX_ADDRESS 65535
 #define LINE_BUF 256
 
@@ -17,6 +19,8 @@ typedef struct{
     long loaded;
     long used;
 } TLBEntry;
+
+static TLBEntry tlb[TLB_SIZE];
 
 static int *addresses = NULL;
 static int n_addresses = 0;
@@ -107,4 +111,37 @@ static void load_addresses(const char *path){
     if (n_addresses == 0){
         fatal("o arquivo de endereços está vazio", path);
     }
+}
+
+typedef struct{
+    int index;      
+    int page;       
+    int *found;     
+} TLBSearchArg;
+
+static void *tlb_search_entry(void *arg){
+    TLBSearchArg *a = (TLBSearchArg *)arg;
+    if (tlb[a->index].valid && tlb[a->index].page == a->page){
+        *a->found = a->index;
+    }   
+    return NULL;
+}
+
+static int tlb_lookup(int page){
+    pthread_t threads[TLB_SIZE];
+    TLBSearchArg args[TLB_SIZE];
+    int found = -1;
+
+    for(int i = 0; i < TLB_SIZE; i++){
+        args[i].index = i;
+        args[i].page = page;
+        args[i].found = &found;
+        if(pthread_create(&threads[i], NULL, tlb_search_entry, &args[i]) != 0){
+            fatal("não foi possível criar a thread de busca na TLB", NULL);
+        }       
+    }
+    for (int i = 0; i < TLB_SIZE; i++){
+        pthread_join(threads[i], NULL);
+    }
+    return found;
 }
