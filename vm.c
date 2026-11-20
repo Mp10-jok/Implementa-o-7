@@ -19,7 +19,7 @@ typedef enum{
 
 static int page_table[NUM_PAGES];
 
-static signed char memory[NUMFRAMES][PAGE_SIZE];
+static signed char memory[NUM_FRAMES][PAGE_SIZE];
 static int frame_page[NUM_FRAMES];          
 static long frame_loaded[NUM_FRAMES];       
 static long frame_used[NUM_FRAMES];
@@ -44,9 +44,9 @@ static int n_addresses = 0;
 
 static void fatal(const char *msg, const char *detail){
     if(detail){
-        fprint(stderr, "Erro: %s: %s\n", msg, detail);
+        fprintf(stderr, "Erro: %s: %s\n", msg, detail);
     } else{
-        fprint(stderr, "Erro: %s\n", msg);
+        fprintf(stderr, "Erro: %s\n", msg);
     }
     free(addresses);
     exit(EXIT_FAILURE);
@@ -72,7 +72,7 @@ static int parse_algorithm(const char *s, Algorithm *alg){
 }
 
 static void load_addresses(const char *path){
-    FILE *r = fopen(path, "r");
+    FILE *f = fopen(path, "r");
     if(!f){
         perror("Erro ao abrir o arquivo de endereços");
         fprintf(stderr, "Arquivo: %s\n", path);
@@ -208,19 +208,19 @@ static int choose_victim_frame(Algorithm page_alg) {
     return victim;
 }
 
-static int handle_page_fault(int page, FILE *store, Algorithm page_alg){
+static int handle_page_fault(int page, FILE *store, Algorithm page_alg) {
     int frame;
 
     if(frames_in_use < NUM_FRAMES){
         frame = frames_in_use++;            
     } else{
         frame = choose_victim_frame(page_alg);
-        int old_page = frame_page[frames];
+        int old_page = frame_page[frame];
         page_table[old_page] = -1;          
         tlb_invalidate(old_page);           
     }
 
-    if(fseek(stores, (long)page * PAGE_SIZE, SEEK_SET) != 0 || fread(memory[frame], 1, PAGE_SIZE, store) != PAGE_SIZE){
+    if(fseek(store, (long)page * PAGE_SIZE, SEEK_SET) != 0 || fread(memory[frame], 1, PAGE_SIZE, store) != PAGE_SIZE){
         fatal("falha ao ler a página do " BACKING_STORE, NULL);
     }
 
