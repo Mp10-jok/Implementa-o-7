@@ -4,13 +4,26 @@
 #include <ctype.h>
 #include <pthread.h>
 
+#define PAGE_SIZE 256 
+#define NUM_PAGES 256 
+#define NUM_FRAMES 128
 #define TLB_SIZE 16
 #define MAX_ADDRESS 65535
+#define BACKING_STORE "BACKING_STORE.bin"
+#define OUTPUT_FILE "correct.txt"
 #define LINE_BUF 256
 
 typedef enum{ 
     ALG_FIFO, ALG_LRU 
 } Algorithm;
+
+static int page_table[NUM_PAGES];
+
+static signed char memory[NUMFRAMES][PAGE_SIZE];
+static int frame_page[NUM_FRAMES];          
+static long frame_loaded[NUM_FRAMES];       
+static long frame_used[NUM_FRAMES];
+static int frames_in_use = 0;
 
 typedef struct{
     int valid;
@@ -31,9 +44,9 @@ static int n_addresses = 0;
 
 static void fatal(const char *msg, const char *detail){
     if(detail){
-        fprintf(stderr, "Erro: %s: %s\n", msg, detail);
+        fprint(stderr, "Erro: %s: %s\n", msg, detail);
     } else{
-        fprintf(stderr, "Erro: %s\n", msg);
+        fprint(stderr, "Erro: %s\n", msg);
     }
     free(addresses);
     exit(EXIT_FAILURE);
@@ -59,7 +72,7 @@ static int parse_algorithm(const char *s, Algorithm *alg){
 }
 
 static void load_addresses(const char *path){
-    FILE *f = fopen(path, "r");
+    FILE *r = fopen(path, "r");
     if(!f){
         perror("Erro ao abrir o arquivo de endereços");
         fprintf(stderr, "Arquivo: %s\n", path);
@@ -181,4 +194,39 @@ static void tlb_invalidate(int page){
             tlb[i].valid = 0;
         } 
     }       
+}
+
+static int choose_victim_frame(Algorithm page_alg) {
+    int victim = 0;
+    for(int i = 1; i < NUM_FRAMES; i++){
+        long a = (page_alg == ALG_FIFO) ? frame_loaded[i] : frame_used[i];
+        long b = (page_alg == ALG_FIFO) ? frame_loaded[victim] : frame_used[victim];
+        if(a < b){
+            victim = i;
+        }
+    }
+    return victim;
+}
+
+static int handle_page_fault(int page, FILE *store, Algorithm page_alg){
+    int frame;
+
+    if(frames_in_use < NUM_FRAMES){
+        frame = frames_in_use++;            
+    } else{
+        frame = choose_victim_frame(page_alg);
+        int old_page = frame_page[frames];
+        page_table[old_page] = -1;          
+        tlb_invalidate(old_page);           
+    }
+
+    if(fseek(stores, (long)page * PAGE_SIZE, SEEK_SET) != 0 || fread(memory[frame], 1, PAGE_SIZE, store) != PAGE_SIZE){
+        fatal("falha ao ler a página do " BACKING_STORE, NULL);
+    }
+
+    page_table[page] = frame;
+    frame_page[frame] = page;
+    frame_loaded[frame] = clock_tick;
+    page_faults++;
+    return frame;
 }
