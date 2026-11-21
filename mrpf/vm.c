@@ -101,7 +101,7 @@ static void load_addresses(const char *path){
 
         int len = (int)strlen(line);
         int ok = len > 0 && len <= 5;
-        for (int i = 0; ok && i < len; i++){
+        for(int i = 0; ok && i < len; i++){
             if(!isdigit((unsigned char)line[i])) ok = 0;
         }
 
@@ -125,7 +125,7 @@ static void load_addresses(const char *path){
         addresses[n_addresses++] = (int)value;
     }
     fclose(f);
-    if (n_addresses == 0){
+    if(n_addresses == 0){
         fatal("o arquivo de endereços está vazio", path);
     }
 }
@@ -138,7 +138,7 @@ typedef struct{
 
 static void *tlb_search_entry(void *arg){
     TLBSearchArg *a = (TLBSearchArg *)arg;
-    if (tlb[a->index].valid && tlb[a->index].page == a->page){
+    if(tlb[a->index].valid && tlb[a->index].page == a->page){
         *a->found = a->index;
     }   
     return NULL;
@@ -196,7 +196,7 @@ static void tlb_invalidate(int page){
     }       
 }
 
-static int choose_victim_frame(Algorithm page_alg) {
+static int choose_victim_frame(Algorithm page_alg){
     int victim = 0;
     for(int i = 1; i < NUM_FRAMES; i++){
         long a = (page_alg == ALG_FIFO) ? frame_loaded[i] : frame_used[i];
@@ -208,7 +208,7 @@ static int choose_victim_frame(Algorithm page_alg) {
     return victim;
 }
 
-static int handle_page_fault(int page, FILE *store, Algorithm page_alg) {
+static int handle_page_fault(int page, FILE *store, Algorithm page_alg){
     int frame;
 
     if(frames_in_use < NUM_FRAMES){
@@ -229,4 +229,83 @@ static int handle_page_fault(int page, FILE *store, Algorithm page_alg) {
     frame_loaded[frame] = clock_tick;
     page_faults++;
     return frame;
+}
+
+int main(int argc, char *argv[]){
+    Algorithm page_alg, tlb_alg;
+
+    if(argc != 4){
+        fprintf(stderr, "Erro: número de argumentos inválido (recebido %d, esperado 3)\n", argc - 1);
+        usage();
+        return EXIT_FAILURE;
+    }
+    if(!parse_algorithm(argv[2], &page_alg)){
+        fprintf(stderr, "Erro: algoritmo de substituição de página inválido: '%s' (use fifo ou lru)\n", argv[2]);
+        usage();
+        return EXIT_FAILURE;
+    }
+    if(!parse_algorithm(argv[3], &tlb_alg)){
+        fprintf(stderr, "Erro: algoritmo de substituição da TLB inválido: '%s' (use fifo ou lru)\n", argv[3]);
+        usage();
+        return EXIT_FAILURE;
+    }
+
+    load_addresses(argv[1]);
+
+    FILE *store = fopen(BACKING_STORE, "rb");
+    if(!store){
+        perror("Erro ao abrir o " BACKING_STORE);
+        free(addresses);
+        return EXIT_FAILURE;
+    }
+
+    FILE *out = fopen(OUTPUT_FILE, "w");
+    if(!out){
+        perror("Erro ao criar o " OUTPUT_FILE);
+        fclose(store);
+        free(addresses);
+        return EXIT_FAILURE;
+    }
+
+    for(int i = 0; i < NUM_PAGES; i++){
+        page_table[i] = -1;
+    }
+    memset(tlb, 0, sizeof(tlb));
+
+    for(int i = 0; i < n_addresses; i++){
+        clock_tick++;
+        int logical = addresses[i];
+        int page = (logical >> 8) & 0xFF;
+        int offset = logical & 0xFF;
+        int frame;
+
+        int t = tlb_lookup(page);
+        if(t != -1){
+            tlb_hits++;
+            frame = tlb[t].frame;
+            tlb[t].used = clock_tick;
+        } else{
+            frame = page_table[page];
+            if (frame == -1){
+                frame = handle_page_fault(page, store, page_alg);  
+            }
+            tlb_insert(page, frame, tlb_alg);
+        }
+        frame_used[frame] = clock_tick;
+
+        int physical = frame * PAGE_SIZE + offset;
+        signed char value = memory[frame][offset];
+        fprintf(out, "Virtual address: %d Physical address: %d Value: %d\n", logical, physical, value);
+    }
+
+    fprintf(out, "Number of Translated Addresses = %d\n", n_addresses);
+    fprintf(out, "Page Faults = %d\n", page_faults);
+    fprintf(out, "Page Fault Rate = %.3f\n", (double)page_faults / n_addresses);
+    fprintf(out, "TLB Hits = %d\n", tlb_hits);
+    fprintf(out, "TLB Hit Rate = %.3f\n", (double)tlb_hits / n_addresses);
+
+    fclose(out);
+    fclose(store);
+    free(addresses);
+    return EXIT_SUCCESS;
 }

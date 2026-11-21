@@ -1,0 +1,34 @@
+marciorperez@192 implementacao 7 % make clean
+make
+make: *** No rule to make target `clean'.  Stop.
+make: *** No targets specified and no makefile found.  Stop.
+marciorperez@192 implementacao 7 % ./vm addresses.txt fifo fifo
+tail -5 correct.txt
+./vm addresses.txt fifo lru
+tail -5 correct.txt
+./vm addresses.txt lru lru
+tail -5 correct.txt
+zsh: no such file or directory: ./vm
+tail: correct.txt: No such file or directory
+zsh: no such file or directory: ./vm
+tail: correct.txt: No such file or directory
+zsh: no such file or directory: ./vm
+tail: correct.txt: No such file or directory
+marciorperez@192 implementacao 7 % ./vm naoexiste.txt lru fifo
+printf '16916\nabc\n' > ruim.txt
+./vm ruim.txt lru fifo
+printf '70000\n' > grande.txt
+./vm grande.txt lru fifo
+: > vazio.txt
+./vm vazio.txt lru fifo
+mv BACKING_STORE.bin BACKING_STORE.bak
+./vm addresses.txt lru fifo
+mv BACKING_STORE.bak BACKING_STORE.bin
+rm ruim.txt grande.txt vazio.txt
+zsh: no such file or directory: ./vm
+zsh: no such file or directory: ./vm
+zsh: no such file or directory: ./vm
+zsh: no such file or directory: ./vm
+mv: rename BACKING_STORE.bin to BACKING_STORE.bak: No such file or directory
+zsh: no such file or directory: ./vm
+mv: rename BACKING_STORE.bak to BACKING_STORE.bin: No such file or directory
