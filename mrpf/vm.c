@@ -163,7 +163,7 @@ static int tlb_lookup(int page){
     return found;
 }
 
-static void tlb_insert(int page, int frame, Algorithm tlb_alg){
+static int tlb_insert(int page, int frame, Algorithm tlb_alg){
     int victim = -1;
 
     for(int i = 0; i < TLB_SIZE; i++){
@@ -186,6 +186,7 @@ static void tlb_insert(int page, int frame, Algorithm tlb_alg){
     tlb[victim].frame = frame;
     tlb[victim].loaded = clock_tick;
     tlb[victim].used = clock_tick;
+    return victim;
 }
 
 static void tlb_invalidate(int page){
@@ -280,29 +281,31 @@ int main(int argc, char *argv[]){
         int frame;
 
         int t = tlb_lookup(page);
+        int tlb_index;
         if(t != -1){
             tlb_hits++;
             frame = tlb[t].frame;
             tlb[t].used = clock_tick;
+            tlb_index = t;
         } else{
             frame = page_table[page];
             if (frame == -1){
                 frame = handle_page_fault(page, store, page_alg);  
             }
-            tlb_insert(page, frame, tlb_alg);
+            tlb_index = tlb_insert(page, frame, tlb_alg);
         }
         frame_used[frame] = clock_tick;
 
         int physical = frame * PAGE_SIZE + offset;
         signed char value = memory[frame][offset];
-        fprintf(out, "Virtual address: %d Physical address: %d Value: %d\n", logical, physical, value);
+        fprintf(out, "Virtual address: %d TLB: %d Physical address: %d Value: %d\n", logical, tlb_index, physical, value);
     }
 
     fprintf(out, "Number of Translated Addresses = %d\n", n_addresses);
     fprintf(out, "Page Faults = %d\n", page_faults);
     fprintf(out, "Page Fault Rate = %.3f\n", (double)page_faults / n_addresses);
     fprintf(out, "TLB Hits = %d\n", tlb_hits);
-    fprintf(out, "TLB Hit Rate = %.3f\n", (double)tlb_hits / n_addresses);
+    fprintf(out, "TLB Hit Rate = %.3f", (double)tlb_hits / n_addresses);
 
     fclose(out);
     fclose(store);

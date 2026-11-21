@@ -1,34 +1,148 @@
-marciorperez@192 implementacao 7 % make clean
-make
-make: *** No rule to make target `clean'.  Stop.
-make: *** No targets specified and no makefile found.  Stop.
-marciorperez@192 implementacao 7 % ./vm addresses.txt fifo fifo
-tail -5 correct.txt
-./vm addresses.txt fifo lru
-tail -5 correct.txt
-./vm addresses.txt lru lru
-tail -5 correct.txt
-zsh: no such file or directory: ./vm
-tail: correct.txt: No such file or directory
-zsh: no such file or directory: ./vm
-tail: correct.txt: No such file or directory
-zsh: no such file or directory: ./vm
-tail: correct.txt: No such file or directory
-marciorperez@192 implementacao 7 % ./vm naoexiste.txt lru fifo
-printf '16916\nabc\n' > ruim.txt
-./vm ruim.txt lru fifo
-printf '70000\n' > grande.txt
-./vm grande.txt lru fifo
-: > vazio.txt
-./vm vazio.txt lru fifo
-mv BACKING_STORE.bin BACKING_STORE.bak
-./vm addresses.txt lru fifo
-mv BACKING_STORE.bak BACKING_STORE.bin
-rm ruim.txt grande.txt vazio.txt
-zsh: no such file or directory: ./vm
-zsh: no such file or directory: ./vm
-zsh: no such file or directory: ./vm
-zsh: no such file or directory: ./vm
-mv: rename BACKING_STORE.bin to BACKING_STORE.bak: No such file or directory
-zsh: no such file or directory: ./vm
-mv: rename BACKING_STORE.bak to BACKING_STORE.bin: No such file or directory
+Script started on Sat Nov 21 08:03:46 2026
+[1m[7m%[27m[1m[0m                                                                                                [0m[27m[24m[Jmarciorperez@192 mrpf % [K[?2004h[7mmake clean[27m
+[7mmake[27m[K
+[7m./vm addresses.txt lru fifo[27m[K
+[7mhead -5 correct.txt[27m[K
+[7mtail -5 correct.txt[27m[K
+[7mdiff correct.txt correct_professor.txt && echo "IGUAL AO DO PROFESSOR"[27m[K[5A[46D[27mm[27ma[27mk[27me[27m [27mc[27ml[27me[27ma[27mn[1B[27mm[27ma[27mk[27me[1B[27m.[27m/[27mv[27mm[27m [27ma[27md[27md[27mr[27me[27ms[27ms[27me[27ms[27m.[27mt[27mx[27mt[27m [27ml[27mr[27mu[27m [27mf[27mi[27mf[27mo[1B[27mh[27me[27ma[27md[27m [27m-[27m5[27m [27mc[27mo[27mr[27mr[27me[27mc[27mt[27m.[27mt[27mx[27mt[1B[27mt[27ma[27mi[27ml[27m [27m-[27m5[27m [27mc[27mo[27mr[27mr[27me[27mc[27mt[27m.[27mt[27mx[27mt[1B[27md[27mi[27mf[27mf[27m [27mc[27mo[27mr[27mr[27me[27mc[27mt[27m.[27mt[27mx[27mt[27m [27mc[27mo[27mr[27mr[27me[27mc[27mt[27m_[27mp[27mr[27mo[27mf[27me[27ms[27ms[27mo[27mr[27m.[27mt[27mx[27mt[27m [27m&[27m&[27m [27me[27mc[27mh[27mo[27m [27m"[27mI[27mG[27mU[27mA[27mL[27m [27mA[27mO[27m [27mD[27mO[27m [27mP[27mR[27mO[27mF[27mE[27mS[27mS[27mO[27mR[27m"[?2004l
+rm -f vm correct.txt
+gcc -Wall -Wextra -pthread -o vm vm.c
+Virtual address: 16916 TLB: 0 Physical address: 20 Value: 0
+Virtual address: 62493 TLB: 1 Physical address: 285 Value: 0
+Virtual address: 30198 TLB: 2 Physical address: 758 Value: 29
+Virtual address: 53683 TLB: 3 Physical address: 947 Value: 108
+Virtual address: 40185 TLB: 4 Physical address: 1273 Value: 0
+Number of Translated Addresses = 1000
+Page Faults = 539
+Page Fault Rate = 0.539
+TLB Hits = 54
+TLB Hit Rate = 0.054IGUAL AO DO PROFESSOR
+[1m[7m%[27m[1m[0m                                                                                                [0m[27m[24m[Jmarciorperez@192 mrpf % [K[?2004h[7m./vm addresses.txt fifo fifo[27m
+[7mtail -5 correct.txt[27m[K
+[7m./vm addresses.txt fifo lru[27m[K
+[7mtail -5 correct.txt[27m[K
+[7m./vm addresses.txt lru lru[27m[K
+[7mtail -5 correct.txt[27m[K[5A[5C[27m.[27m/[27mv[27mm[27m [27ma[27md[27md[27mr[27me[27ms[27ms[27me[27ms[27m.[27mt[27mx[27mt[27m [27mf[27mi[27mf[27mo[27m [27mf[27mi[27mf[27mo[1B[27mt[27ma[27mi[27ml[27m [27m-[27m5[27m [27mc[27mo[27mr[27mr[27me[27mc[27mt[27m.[27mt[27mx[27mt[1B[27m.[27m/[27mv[27mm[27m [27ma[27md[27md[27mr[27me[27ms[27ms[27me[27ms[27m.[27mt[27mx[27mt[27m [27mf[27mi[27mf[27mo[27m [27ml[27mr[27mu[1B[27mt[27ma[27mi[27ml[27m [27m-[27m5[27m [27mc[27mo[27mr[27mr[27me[27mc[27mt[27m.[27mt[27mx[27mt[1B[27m.[27m/[27mv[27mm[27m [27ma[27md[27md[27mr[27me[27ms[27ms[27me[27ms[27m.[27mt[27mx[27mt[27m [27ml[27mr[27mu[27m [27ml[27mr[27mu[1B[27mt[27ma[27mi[27ml[27m [27m-[27m5[27m [27mc[27mo[27mr[27mr[27me[27mc[27mt[27m.[27mt[27mx[27mt[?2004l
+Number of Translated Addresses = 1000
+Page Faults = 538
+Page Fault Rate = 0.538
+TLB Hits = 54
+TLB Hit Rate = 0.054Number of Translated Addresses = 1000
+Page Faults = 538
+Page Fault Rate = 0.538
+TLB Hits = 55
+TLB Hit Rate = 0.055Number of Translated Addresses = 1000
+Page Faults = 539
+Page Fault Rate = 0.539
+TLB Hits = 55
+TLB Hit Rate = 0.055[1m[7m%[27m[1m[0m                                                                                                [0m[27m[24m[Jmarciorperez@192 mrpf % [K[?2004h[7m./vm[27m
+[7m./vm addresses.txt lru[27m[K
+[7m./vm addresses.txt lru fifo extra[27m[K
+[7m./vm addresses.txt LRU fifo[27m[K
+[7m./vm addresses.txt lru abc[27m[K[4A[27m.[27m/[27mv[27mm[1B[27m.[27m/[27mv[27mm[27m [27ma[27md[27md[27mr[27me[27ms[27ms[27me[27ms[27m.[27mt[27mx[27mt[27m [27ml[27mr[27mu[1B[27m.[27m/[27mv[27mm[27m [27ma[27md[27md[27mr[27me[27ms[27ms[27me[27ms[27m.[27mt[27mx[27mt[27m [27ml[27mr[27mu[27m [27mf[27mi[27mf[27mo[27m [27me[27mx[27mt[27mr[27ma[1B[27m.[27m/[27mv[27mm[27m [27ma[27md[27md[27mr[27me[27ms[27ms[27me[27ms[27m.[27mt[27mx[27mt[27m [27mL[27mR[27mU[27m [27mf[27mi[27mf[27mo[1B[27m.[27m/[27mv[27mm[27m [27ma[27md[27md[27mr[27me[27ms[27ms[27me[27ms[27m.[27mt[27mx[27mt[27m [27ml[27mr[27mu[27m [27ma[27mb[27mc[?2004l
+Erro: número de argumentos inválido (recebido 0, esperado 3)
+Uso: ./vm <arquivo_de_enderecos> <fifo|lru> <fifo|lru>
+  2o argumento: algoritmo de substituição de página
+  3o argumento: algoritmo de substituição da TLB
+Exemplo: ./vm address.txt lru fifo
+Erro: número de argumentos inválido (recebido 2, esperado 3)
+Uso: ./vm <arquivo_de_enderecos> <fifo|lru> <fifo|lru>
+  2o argumento: algoritmo de substituição de página
+  3o argumento: algoritmo de substituição da TLB
+Exemplo: ./vm address.txt lru fifo
+Erro: número de argumentos inválido (recebido 4, esperado 3)
+Uso: ./vm <arquivo_de_enderecos> <fifo|lru> <fifo|lru>
+  2o argumento: algoritmo de substituição de página
+  3o argumento: algoritmo de substituição da TLB
+Exemplo: ./vm address.txt lru fifo
+Erro: algoritmo de substituição de página inválido: 'LRU' (use fifo ou lru)
+Uso: ./vm <arquivo_de_enderecos> <fifo|lru> <fifo|lru>
+  2o argumento: algoritmo de substituição de página
+  3o argumento: algoritmo de substituição da TLB
+Exemplo: ./vm address.txt lru fifo
+Erro: algoritmo de substituição da TLB inválido: 'abc' (use fifo ou lru)
+Uso: ./vm <arquivo_de_enderecos> <fifo|lru> <fifo|lru>
+  2o argumento: algoritmo de substituição de página
+  3o argumento: algoritmo de substituição da TLB
+Exemplo: ./vm address.txt lru fifo
+[1m[7m%[27m[1m[0m                                                                                                [0m[27m[24m[Jmarciorperez@192 mrpf % [K[?2004h[7m./vm naoexiste.txt lru fifo[27m
+[7mprintf '16916\nabc\n' > ruim.txt[27m[K
+[7m./vm ruim.txt lru fifo[27m[K
+[7mprintf '70000\n' > grande.txt[27m[K
+[7m./vm grande.txt lru fifo[27m[K
+[7m: > vazio.txt[27m[K
+[7m./vm vazio.txt lru fifo[27m[K
+[7mmv BACKING_STORE.bin BACKING_STORE.bak[27m[K
+[7m./vm addresses.txt lru fifo[27m[K
+[7mmv BACKING_STORE.bak BACKING_STORE.bin[27m[K
+[7mrm ruim.txt grande.txt vazio.txt[27m[K[10A[8D[27m.[27m/[27mv[27mm[27m [27mn[27ma[27mo[27me[27mx[27mi[27ms[27mt[27me[27m.[27mt[27mx[27mt[27m [27ml[27mr[27mu[27m [27mf[27mi[27mf[27mo[1B[27mp[27mr[27mi[27mn[27mt[27mf[27m [27m'[27m1[27m6[27m9[27m1[27m6[27m\[27mn[27ma[27mb[27mc[27m\[27mn[27m'[27m [27m>[27m [27mr[27mu[27mi[27mm[27m.[27mt[27mx[27mt[1B[27m.[27m/[27mv[27mm[27m [27mr[27mu[27mi[27mm[27m.[27mt[27mx[27mt[27m [27ml[27mr[27mu[27m [27mf[27mi[27mf[27mo[1B[27mp[27mr[27mi[27mn[27mt[27mf[27m [27m'[27m7[27m0[27m0[27m0[27m0[27m\[27mn[27m'[27m [27m>[27m [27mg[27mr[27ma[27mn[27md[27me[27m.[27mt[27mx[27mt[1B[27m.[27m/[27mv[27mm[27m [27mg[27mr[27ma[27mn[27md[27me[27m.[27mt[27mx[27mt[27m [27ml[27mr[27mu[27m [27mf[27mi[27mf[27mo[1B[27m:[27m [27m>[27m [27mv[27ma[27mz[27mi[27mo[27m.[27mt[27mx[27mt[1B[27m.[27m/[27mv[27mm[27m [27mv[27ma[27mz[27mi[27mo[27m.[27mt[27mx[27mt[27m [27ml[27mr[27mu[27m [27mf[27mi[27mf[27mo[1B[27mm[27mv[27m [27mB[27mA[27mC[27mK[27mI[27mN[27mG[27m_[27mS[27mT[27mO[27mR[27mE[27m.[27mb[27mi[27mn[27m [27mB[27mA[27mC[27mK[27mI[27mN[27mG[27m_[27mS[27mT[27mO[27mR[27mE[27m.[27mb[27ma[27mk[1B[27m.[27m/[27mv[27mm[27m [27ma[27md[27md[27mr[27me[27ms[27ms[27me[27ms[27m.[27mt[27mx[27mt[27m [27ml[27mr[27mu[27m [27mf[27mi[27mf[27mo[1B[27mm[27mv[27m [27mB[27mA[27mC[27mK[27mI[27mN[27mG[27m_[27mS[27mT[27mO[27mR[27mE[27m.[27mb[27ma[27mk[27m [27mB[27mA[27mC[27mK[27mI[27mN[27mG[27m_[27mS[27mT[27mO[27mR[27mE[27m.[27mb[27mi[27mn[1B[27mr[27mm[27m [27mr[27mu[27mi[27mm[27m.[27mt[27mx[27mt[27m [27mg[27mr[27ma[27mn[27md[27me[27m.[27mt[27mx[27mt[27m [27mv[27ma[27mz[27mi[27mo[27m.[27mt[27mx[27mt[?2004l
+Erro ao abrir o arquivo de endereços: No such file or directory
+Arquivo: naoexiste.txt
+Erro: linha 2 do arquivo de endereços inválida: 'abc'
+Formato esperado: um número inteiro de 0 a 65535 por linha
+Erro: linha 1 do arquivo de endereços inválida: '70000'
+Formato esperado: um número inteiro de 0 a 65535 por linha
+Erro: o arquivo de endereços está vazio: vazio.txt
+Erro ao abrir o BACKING_STORE.bin: No such file or directory
+[1m[7m%[27m[1m[0m                                                                                                [0m[27m[24m[Jmarciorperez@192 mrpf % [K[?2004h[7m./vm addresses.txt fifo fifo[27m
+[7mtail -5 correct.txt[27m[K
+[7m./vm addresses.txt fifo lru[27m[K
+[7mtail -5 correct.txt[27m[K
+[7m./vm addresses.txt lru lru[27m[K
+[7mtail -5 correct.txt[27m[K[5A[5C[27m.[27m/[27mv[27mm[27m [27ma[27md[27md[27mr[27me[27ms[27ms[27me[27ms[27m.[27mt[27mx[27mt[27m [27mf[27mi[27mf[27mo[27m [27mf[27mi[27mf[27mo[1B[27mt[27ma[27mi[27ml[27m [27m-[27m5[27m [27mc[27mo[27mr[27mr[27me[27mc[27mt[27m.[27mt[27mx[27mt[1B[27m.[27m/[27mv[27mm[27m [27ma[27md[27md[27mr[27me[27ms[27ms[27me[27ms[27m.[27mt[27mx[27mt[27m [27mf[27mi[27mf[27mo[27m [27ml[27mr[27mu[1B[27mt[27ma[27mi[27ml[27m [27m-[27m5[27m [27mc[27mo[27mr[27mr[27me[27mc[27mt[27m.[27mt[27mx[27mt[1B[27m.[27m/[27mv[27mm[27m [27ma[27md[27md[27mr[27me[27ms[27ms[27me[27ms[27m.[27mt[27mx[27mt[27m [27ml[27mr[27mu[27m [27ml[27mr[27mu[1B[27mt[27ma[27mi[27ml[27m [27m-[27m5[27m [27mc[27mo[27mr[27mr[27me[27mc[27mt[27m.[27mt[27mx[27mt[?2004l
+Number of Translated Addresses = 1000
+Page Faults = 538
+Page Fault Rate = 0.538
+TLB Hits = 54
+TLB Hit Rate = 0.054Number of Translated Addresses = 1000
+Page Faults = 538
+Page Fault Rate = 0.538
+TLB Hits = 55
+TLB Hit Rate = 0.055Number of Translated Addresses = 1000
+Page Faults = 539
+Page Fault Rate = 0.539
+TLB Hits = 55
+TLB Hit Rate = 0.055[1m[7m%[27m[1m[0m                                                                                                [0m[27m[24m[Jmarciorperez@192 mrpf % [K[?2004hmmak  ke clena  an [?2004l
+rm -f vm correct.txt
+[1m[7m%[27m[1m[0m                                                                                                [0m[27m[24m[Jmarciorperez@192 mrpf % [K[?2004hmmake[?2004l
+gcc -Wall -Wextra -pthread -o vm vm.c
+[1m[7m%[27m[1m[0m                                                                                                [0m[27m[24m[Jmarciorperez@192 mrpf % [K[?2004h[7m./vm addresses.txt fifo fifo[27m
+[7mtail -5 correct.txt[27m[K
+[7m./vm addresses.txt fifo lru[27m[K
+[7mtail -5 correct.txt[27m[K
+[7m./vm addresses.txt lru lru[27m[K
+[7mtail -5 correct.txt[27m[K[5A[5C[27m.[27m/[27mv[27mm[27m [27ma[27md[27md[27mr[27me[27ms[27ms[27me[27ms[27m.[27mt[27mx[27mt[27m [27mf[27mi[27mf[27mo[27m [27mf[27mi[27mf[27mo[1B[27mt[27ma[27mi[27ml[27m [27m-[27m5[27m [27mc[27mo[27mr[27mr[27me[27mc[27mt[27m.[27mt[27mx[27mt[1B[27m.[27m/[27mv[27mm[27m [27ma[27md[27md[27mr[27me[27ms[27ms[27me[27ms[27m.[27mt[27mx[27mt[27m [27mf[27mi[27mf[27mo[27m [27ml[27mr[27mu[1B[27mt[27ma[27mi[27ml[27m [27m-[27m5[27m [27mc[27mo[27mr[27mr[27me[27mc[27mt[27m.[27mt[27mx[27mt[1B[27m.[27m/[27mv[27mm[27m [27ma[27md[27md[27mr[27me[27ms[27ms[27me[27ms[27m.[27mt[27mx[27mt[27m [27ml[27mr[27mu[27m [27ml[27mr[27mu[1B[27mt[27ma[27mi[27ml[27m [27m-[27m5[27m [27mc[27mo[27mr[27mr[27me[27mc[27mt[27m.[27mt[27mx[27mt[?2004l
+Number of Translated Addresses = 1000
+Page Faults = 538
+Page Fault Rate = 0.538
+TLB Hits = 54
+TLB Hit Rate = 0.054Number of Translated Addresses = 1000
+Page Faults = 538
+Page Fault Rate = 0.538
+TLB Hits = 55
+TLB Hit Rate = 0.055Number of Translated Addresses = 1000
+Page Faults = 539
+Page Fault Rate = 0.539
+TLB Hits = 55
+TLB Hit Rate = 0.055[1m[7m%[27m[1m[0m                                                                                                [0m[27m[24m[Jmarciorperez@192 mrpf % [K[?2004h[7m./vm naoexiste.txt lru fifo[27m
+[7mprintf '16916\nabc\n' > ruim.txt[27m[K
+[7m./vm ruim.txt lru fifo[27m[K
+[7mprintf '70000\n' > grande.txt[27m[K
+[7m./vm grande.txt lru fifo[27m[K
+[7m: > vazio.txt[27m[K
+[7m./vm vazio.txt lru fifo[27m[K
+[7mmv BACKING_STORE.bin BACKING_STORE.bak[27m[K
+[7m./vm addresses.txt lru fifo[27m[K
+[7mmv BACKING_STORE.bak BACKING_STORE.bin[27m[K
+[7mrm ruim.txt grande.txt vazio.txt[27m[K[10A[8D[27m.[27m/[27mv[27mm[27m [27mn[27ma[27mo[27me[27mx[27mi[27ms[27mt[27me[27m.[27mt[27mx[27mt[27m [27ml[27mr[27mu[27m [27mf[27mi[27mf[27mo[1B[27mp[27mr[27mi[27mn[27mt[27mf[27m [27m'[27m1[27m6[27m9[27m1[27m6[27m\[27mn[27ma[27mb[27mc[27m\[27mn[27m'[27m [27m>[27m [27mr[27mu[27mi[27mm[27m.[27mt[27mx[27mt[1B[27m.[27m/[27mv[27mm[27m [27mr[27mu[27mi[27mm[27m.[27mt[27mx[27mt[27m [27ml[27mr[27mu[27m [27mf[27mi[27mf[27mo[1B[27mp[27mr[27mi[27mn[27mt[27mf[27m [27m'[27m7[27m0[27m0[27m0[27m0[27m\[27mn[27m'[27m [27m>[27m [27mg[27mr[27ma[27mn[27md[27me[27m.[27mt[27mx[27mt[1B[27m.[27m/[27mv[27mm[27m [27mg[27mr[27ma[27mn[27md[27me[27m.[27mt[27mx[27mt[27m [27ml[27mr[27mu[27m [27mf[27mi[27mf[27mo[1B[27m:[27m [27m>[27m [27mv[27ma[27mz[27mi[27mo[27m.[27mt[27mx[27mt[1B[27m.[27m/[27mv[27mm[27m [27mv[27ma[27mz[27mi[27mo[27m.[27mt[27mx[27mt[27m [27ml[27mr[27mu[27m [27mf[27mi[27mf[27mo[1B[27mm[27mv[27m [27mB[27mA[27mC[27mK[27mI[27mN[27mG[27m_[27mS[27mT[27mO[27mR[27mE[27m.[27mb[27mi[27mn[27m [27mB[27mA[27mC[27mK[27mI[27mN[27mG[27m_[27mS[27mT[27mO[27mR[27mE[27m.[27mb[27ma[27mk[1B[27m.[27m/[27mv[27mm[27m [27ma[27md[27md[27mr[27me[27ms[27ms[27me[27ms[27m.[27mt[27mx[27mt[27m [27ml[27mr[27mu[27m [27mf[27mi[27mf[27mo[1B[27mm[27mv[27m [27mB[27mA[27mC[27mK[27mI[27mN[27mG[27m_[27mS[27mT[27mO[27mR[27mE[27m.[27mb[27ma[27mk[27m [27mB[27mA[27mC[27mK[27mI[27mN[27mG[27m_[27mS[27mT[27mO[27mR[27mE[27m.[27mb[27mi[27mn[1B[27mr[27mm[27m [27mr[27mu[27mi[27mm[27m.[27mt[27mx[27mt[27m [27mg[27mr[27ma[27mn[27md[27me[27m.[27mt[27mx[27mt[27m [27mv[27ma[27mz[27mi[27mo[27m.[27mt[27mx[27mt[?2004l
+Erro ao abrir o arquivo de endereços: No such file or directory
+Arquivo: naoexiste.txt
+Erro: linha 2 do arquivo de endereços inválida: 'abc'
+Formato esperado: um número inteiro de 0 a 65535 por linha
+Erro: linha 1 do arquivo de endereços inválida: '70000'
+Formato esperado: um número inteiro de 0 a 65535 por linha
+Erro: o arquivo de endereços está vazio: vazio.txt
+Erro ao abrir o BACKING_STORE.bin: No such file or directory
+[1m[7m%[27m[1m[0m                                                                                                [0m[27m[24m[Jmarciorperez@192 mrpf % [K[?2004heexit[?2004l
+
+Script done on Sat Nov 21 08:06:17 2026
