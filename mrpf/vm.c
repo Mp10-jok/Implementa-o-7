@@ -97,7 +97,12 @@ static void load_addresses(const char *path){
             exit(EXIT_FAILURE);
         }
 
-        line[strcspn(line, "\r\n")] = '\0';
+        char *start = line;
+        while(*start == ' ' || *start == '\t') start++;
+        char *end = start + strlen(start);
+        while(end > start && isspace((unsigned char)end[-1])) end--;
+        *end = '\0';
+        memmove(line, start, (size_t)(end - start) + 1);
 
         int len = (int)strlen(line);
         int ok = len > 0 && len <= 5;

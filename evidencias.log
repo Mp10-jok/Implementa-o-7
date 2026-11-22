@@ -146,3 +146,22 @@ Erro ao abrir o BACKING_STORE.bin: No such file or directory
 [1m[7m%[27m[1m[0m                                                                                                [0m[27m[24m[Jmarciorperez@192 mrpf % [K[?2004heexit[?2004l
 
 Script done on Sat Nov 21 08:06:17 2026
+Script started on Sat Nov 21 10:01:11 2026
+[1m[7m%[27m[1m[0m                                                                               [0m[27m[24m[Jmarciorperez@192 mrpf % [K[?2004h[7mmake clean && make[27m
+[7mprintf '16916 \n62493\n' > espaco.txt[27m[K
+[7m./vm espaco.txt lru fifo && cat correct.txt[27m[K
+[7mrm espaco.txt[27m[K
+[7m./vm addresses.txt lru fifo[27m[K
+[7mdiff correct.txt correct_professor.txt && echo "IGUAL AO DO PROFESSOR"[27m[K[5A[46D[27mm[27ma[27mk[27me[27m [27mc[27ml[27me[27ma[27mn[27m [27m&[27m&[27m [27mm[27ma[27mk[27me[1B[27mp[27mr[27mi[27mn[27mt[27mf[27m [27m'[27m1[27m6[27m9[27m1[27m6[27m [27m\[27mn[27m6[27m2[27m4[27m9[27m3[27m\[27mn[27m'[27m [27m>[27m [27me[27ms[27mp[27ma[27mc[27mo[27m.[27mt[27mx[27mt[1B[27m.[27m/[27mv[27mm[27m [27me[27ms[27mp[27ma[27mc[27mo[27m.[27mt[27mx[27mt[27m [27ml[27mr[27mu[27m [27mf[27mi[27mf[27mo[27m [27m&[27m&[27m [27mc[27ma[27mt[27m [27mc[27mo[27mr[27mr[27me[27mc[27mt[27m.[27mt[27mx[27mt[1B[27mr[27mm[27m [27me[27ms[27mp[27ma[27mc[27mo[27m.[27mt[27mx[27mt[1B[27m.[27m/[27mv[27mm[27m [27ma[27md[27md[27mr[27me[27ms[27ms[27me[27ms[27m.[27mt[27mx[27mt[27m [27ml[27mr[27mu[27m [27mf[27mi[27mf[27mo[1B[27md[27mi[27mf[27mf[27m [27mc[27mo[27mr[27mr[27me[27mc[27mt[27m.[27mt[27mx[27mt[27m [27mc[27mo[27mr[27mr[27me[27mc[27mt[27m_[27mp[27mr[27mo[27mf[27me[27ms[27ms[27mo[27mr[27m.[27mt[27mx[27mt[27m [27m&[27m&[27m [27me[27mc[27mh[27mo[27m [27m"[27mI[27mG[27mU[27mA[27mL[27m [27mA[27mO[27m [27mD[27mO[27m [27mP[27mR[27mO[27mF[27mE[27mS[27mS[27mO[27mR[27m"[?2004l
+rm -f vm correct.txt
+gcc -Wall -Wextra -pthread -o vm vm.c
+Virtual address: 16916 TLB: 0 Physical address: 20 Value: 0
+Virtual address: 62493 TLB: 1 Physical address: 285 Value: 0
+Number of Translated Addresses = 2
+Page Faults = 2
+Page Fault Rate = 1.000
+TLB Hits = 0
+TLB Hit Rate = 0.000IGUAL AO DO PROFESSOR
+[1m[7m%[27m[1m[0m                                                                               [0m[27m[24m[Jmarciorperez@192 mrpf % [K[?2004heexit[?2004l
+
+Script done on Sat Nov 21 10:01:59 2026
