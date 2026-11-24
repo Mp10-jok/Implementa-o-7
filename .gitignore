@@ -1,7 +1,10 @@
-mrpf/vm
-mrpf/correct.txt
-mrpf/correct_professor.txt
-mrpf/addresses.txt
-mrpf/BACKING_STORE.bin
-mrpf/*.bak
+vm
+correct.txt
+correct_professor.txt
+addresses.txt
+address.txt
+BACKING_STORE.bin
+*.bak
 .DS_Store
+mrpf.tar
+mrpf/

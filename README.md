@@ -8,21 +8,20 @@ Implementação em C do *Designing a Virtual Memory Manager* (Silberschatz et al
 - substituição de página **fifo** ou **lru**;
 - substituição da TLB (16 entradas) **fifo** ou **lru**;
 - busca na TLB com **uma thread para cada entrada**;
-- saída no arquivo `correct.txt`.
+- saída no terminal (saída padrão), no formato do `correct.txt` do Classroom.
 
 ## Arquivos
 
 | Arquivo | Descrição |
 |---|---|
-| `mrpf/vm.c` | Código-fonte do gerenciador de memória virtual |
-| `mrpf/Makefile` | Compilação (`make`) e limpeza (`make clean`) |
+| `vm.c` | Código-fonte do gerenciador de memória virtual |
+| `Makefile` | Compilação (`make`) e limpeza (`make clean`) |
 | `evidencias.log` | Registro do terminal com a compilação, as execuções e os testes de erro |
 | `mrpf.pdf` | Relatório |
 
 ## Compilação
 
 ```bash
-cd mrpf
 make        
 make clean   
 ```
@@ -41,10 +40,9 @@ Exemplo (página com LRU e TLB com FIFO):
 
 ```bash
 ./vm addresses.txt lru fifo
-cat correct.txt
 ```
 
-O arquivo `BACKING_STORE.bin` precisa estar na mesma pasta do executável. A saída é gravada em `correct.txt`.
+O arquivo `BACKING_STORE.bin` precisa estar na mesma pasta do executável. O programa imprime uma linha por endereço no terminal.
 
 ## Tratamento de erros
 

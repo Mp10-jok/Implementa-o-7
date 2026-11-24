@@ -10,7 +10,6 @@
 #define TLB_SIZE 16
 #define MAX_ADDRESS 65535
 #define BACKING_STORE "BACKING_STORE.bin"
-#define OUTPUT_FILE "correct.txt"
 #define LINE_BUF 256
 
 typedef enum{ 
@@ -265,13 +264,6 @@ int main(int argc, char *argv[]){
         return EXIT_FAILURE;
     }
 
-    FILE *out = fopen(OUTPUT_FILE, "w");
-    if(!out){
-        perror("Erro ao criar o " OUTPUT_FILE);
-        fclose(store);
-        free(addresses);
-        return EXIT_FAILURE;
-    }
 
     for(int i = 0; i < NUM_PAGES; i++){
         page_table[i] = -1;
@@ -303,16 +295,9 @@ int main(int argc, char *argv[]){
 
         int physical = frame * PAGE_SIZE + offset;
         signed char value = memory[frame][offset];
-        fprintf(out, "Virtual address: %d TLB: %d Physical address: %d Value: %d\n", logical, tlb_index, physical, value);
+        printf("Virtual address: %d TLB: %d Physical address: %d Value: %d\n", logical, tlb_index, physical, value);
     }
 
-    fprintf(out, "Number of Translated Addresses = %d\n", n_addresses);
-    fprintf(out, "Page Faults = %d\n", page_faults);
-    fprintf(out, "Page Fault Rate = %.3f\n", (double)page_faults / n_addresses);
-    fprintf(out, "TLB Hits = %d\n", tlb_hits);
-    fprintf(out, "TLB Hit Rate = %.3f", (double)tlb_hits / n_addresses);
-
-    fclose(out);
     fclose(store);
     free(addresses);
     return EXIT_SUCCESS;

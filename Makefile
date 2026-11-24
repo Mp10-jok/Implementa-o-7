@@ -7,6 +7,6 @@ vm: vm.c
 	$(CC) $(CFLAGS) -o vm vm.c
 
 clean:
-	rm -f vm correct.txt
+	rm -f vm
 
 .PHONY: all clean
